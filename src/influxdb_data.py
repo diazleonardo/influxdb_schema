@@ -3,6 +3,13 @@ import sys
 import argparse
 import json
 import os
+import logging
+import pprint
+
+
+logger = logging.getLogger(__name__)
+# avoid foreign logs of level
+logging.getLogger("requests").setLevel(logging.WARNING)
 
 COLS = 4
 width = 72 // COLS
@@ -57,7 +64,7 @@ def main(infile, outfile):
 
         # pprint.pprint(foo)
     dbases = foo.keys()
-    logger.debug(dbases)
+    logger.debug(pprint.pformat(foo))
 
     for dbase in dbases:
         fp.write(f"\n\n<h1>Database: {dbase}</h1>")
@@ -78,7 +85,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("infile", help="JSON formatted input file")
-    parser.add_argument("--outfile", "-o", help="name for output file")
+    parser.add_argument("--outfile", "-o", help="name for output file", default="/tmp/aaaaa.html")
 
     args = parser.parse_args()
     logger.debug(args)

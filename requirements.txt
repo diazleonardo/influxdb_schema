@@ -1,3 +1,4 @@
 nose
 sphinx
-setuptools~=49.2.1
+setuptools
+requests
