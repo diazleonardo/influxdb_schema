@@ -26,27 +26,22 @@ def _query(url, params:str):
     return r.json()['results'][0]['series'][0]['values']
 
 
-def get_databases(url: str):
+def get_data(url: str):
     """ Get database names PLUS some basic information.
 
     Set the database name as keys in the final dictionary.
-    We follow tis longer method just to get teh system_info too.
-    :param url:
-    :return:
+    We follow tis longer method just to get the system_info too.
+
+    :param url: URL to access the server.  Right now plain http:// only
+    :return: data_dictionary
     """
 
-    r = requests.get(url + '/debug/vars')
-    if r.status_code != 200:
-        raise
-
-    jresp = r.json()
-    system_data = jresp["system"]
-
     dbases = {}
-    for k, v in jresp.items():
-        if k.startswith("database:") and not v['tags']['database'].startswith("_"):
-            dbases.setdefault(v['tags']['database'], {"values": v['values']})
-    del jresp
+    d = _query(url, {"q": "show databases"})
+    foo = [ _[0] for _ in d if not _[0].startswith('_')]
+    for _ in foo:
+        dbases.setdefault(_, {})
+
 
     for db in dbases.keys():
         params = {"q": "show measurements", "db": db}
@@ -57,17 +52,13 @@ def get_databases(url: str):
 
         for table in tables:
             dbases[db].setdefault(table, _query(url, params={"db": db, "q": f"show field keys from {table}"}))
-    return dbases, system_data
+    return dbases
 
 
 def main(url):
-    dbases, system_data = get_databases(url)
-    # pprint.pprint(system_data)
-    # pprint.pprint(dbases)
-    # get_data(url, dbases)
+    dbases = get_data(url)
 
     logger.debug(pprint.pformat(dbases))
-    logger.debug(pprint.pformat(system_data))
 
 
 if __name__ == '__main__':
