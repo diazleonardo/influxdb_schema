@@ -1,2 +1,4 @@
 nose
 sphinx
+Jinja2~=2.11.2
+setuptools~=49.2.1
