@@ -19,11 +19,14 @@ logger = logging.getLogger(__name__)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
-def _query(url, params:str):
+def _query(url: str, params: dict) -> str:
     r = requests.get(url + '/query?', params=params)
     if r.status_code != 200:
         raise
-    return r.json()['results'][0]['series'][0]['values']
+    try:
+        return r.json()['results'][0]['series'][0]['values']
+    except KeyError:
+        return None
 
 
 def get_data(url: str):
@@ -38,10 +41,9 @@ def get_data(url: str):
 
     dbases = {}
     d = _query(url, {"q": "show databases"})
-    foo = [ _[0] for _ in d if not _[0].startswith('_')]
+    foo = [_[0] for _ in d if not _[0].startswith('_')]
     for _ in foo:
         dbases.setdefault(_, {})
-
 
     for db in dbases.keys():
         params = {"q": "show measurements", "db": db}
@@ -51,7 +53,15 @@ def get_data(url: str):
         tables = [_[0] for _ in foo]
 
         for table in tables:
-            dbases[db].setdefault(table, _query(url, params={"db": db, "q": f"show field keys from {table}"}))
+            dbases[db].setdefault(table, {})
+
+            foo = _query(url, params={"db": db, "q": f"show field keys from {table}"})
+            dbases[db][table].setdefault("fields", [(_[0], _[1]) for _ in foo])
+            foo = _query(url, params={"db": db, "q": f"show tag keys from {table}"})
+            if foo:
+                dbases[db][table].setdefault("tags", [(_[0]) for _ in foo])
+            else:
+                dbases[db][table].setdefault("tags", [])
     return dbases
 
 
