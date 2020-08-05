@@ -2,11 +2,7 @@
 import sys
 import argparse
 import json
-import logging
 import os
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-
-logger = logging.getLogger(__name__)
 
 COLS = 4
 width = 72 // COLS
@@ -38,27 +34,41 @@ def main(infile, outfile):
     with open(infile) as fp:
         foo = json.load(fp)
 
-    jenv = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+    with open(outfile, "w") as fp:
+        fp.write("""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8"/>
 
+        <style>
+        body {margin-left: 2em;}
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        table {background-color: #F0F8EB}
+        th, td {padding: 5px;}
+        tr:nth-child(even) {background-color: #E5F7D2;}
+        </style>
+        </head>
+        <body>
+        """)
+
+        # pprint.pprint(foo)
     dbases = foo.keys()
-    template = jenv.get_template('data.html')
-    logger.debug(template.render(dbases=foo, a_variable="AAA"))
-    # logger.debug(dbases)
+    logger.debug(dbases)
 
-    #rendered = template.render(navigation=dbases, a_variable="AAA")
+    for dbase in dbases:
+        fp.write(f"\n\n<h1>Database: {dbase}</h1>")
+        tables = foo[dbase].keys()
+        for table in tables:
+            fp.write(f"\n<h2>Table (measurement): {table}</h2>")
+            cur_table = foo[dbase][table][0]
+            fp.write(create_table(cur_table['tags'], "Tags"))
+            fp.write(create_table(cur_table["fields"], "Field names"))
 
-    #logger.debug(rendered)
-    # for dbase in dbases:
-    #     fp.write(f"\n\n<h1>Database: {dbase}</h1>")
-    #     tables = foo[dbase].keys()
-    #     for table in tables:
-    #         fp.write(f"\n<h2>Table (measurement): {table}</h2>")
-    #         cur_table = foo[dbase][table][0]
-    #         fp.write(create_table(cur_table['tags'], "Tags"))
-    #         fp.write(create_table(cur_table["fields"], "Field names"))
-    #
-    # fp.write("</body></html>")
-    #
+    fp.write("</body></html>")
 
 
 if __name__ == "__main__":

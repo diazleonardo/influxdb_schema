@@ -12,13 +12,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='sample',
-    version='0.1.0',
-    description='Sample package for Python-Guide.org',
+    name='influxdb',
+    version='1.0.0',
+    description='Produce an HTML listing of thhe influxdb',
     long_description=readme,
-    author='Kenneth Reitz',
-    author_email='me@kennethreitz.com',
-    url='https://github.com/kennethreitz/samplemod',
+    author='Leonardo Díaz',
+    author_email='ldiaz@antakori.com',
+    url='https://github.com/',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
