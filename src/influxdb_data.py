@@ -21,10 +21,11 @@ def create_table(table, caption, style="border: 1px"):
         result = [f'<table style="{style}" class="{_class}"><caption>{caption}</caption>']
 
         result.append("<tr>")
-        for i, value in enumerate(table):
-            if isinstance(value, (list, tuple)):
-                new_value = value[0] + f" ({value[1][0]})"
 
+        for i, value in enumerate(table):
+            if isinstance(table, dict):
+                lis = sorted([f"<dd>{_}</dd>" for _ in table[value]])
+                new_value = f"<dt>{value}:</dt> {' '.join(lis)}"
             else:
                 new_value = value
             result.append(f"<td>{new_value}</td>")
@@ -60,12 +61,16 @@ def main(url, outfile):
           border: 1px solid black;
           border-collapse: collapse;
         }
-        .Tags {width: 50%; table-layout:fixed}
-        .Field_names {width: 80%; table-layout:fixed}
+        .Tags {table-layout:fixed}
+        .Field_names {table-layout:fixed}
+        /* .Tags {width: 50%; table-layout:fixed}
+         .Field_names {width: 80%; table-layout:fixed}
+         */
         table {background-color: #F0F8EB}
         th, td {padding: 5px;}
         tr:nth-child(even) {background-color: #E5F7D2;}
-        h1 {border-bottom: 4px dotted blue; text-align: center; margin-top: 3em}
+        .db {margin-bottom: 3em}
+        h1 {border-bottom: 4px dotted green; text-align: center}
         h2 {margin-top:3em}
         </style>
         </head>
@@ -77,13 +82,14 @@ def main(url, outfile):
         # logger.debug(pprint.pformat(foo))
 
         for dbase in dbases:
-            fp.write(f"\n\n<h1>Database: {dbase}</h1>")
+            fp.write(f'\n<div class="db">\n<h1>Database: {dbase}</h1>')
             tables = foo[dbase].keys()
             for table in tables:
                 fp.write(f"\n<h2>Table (measurement): {table}</h2>")
                 cur_table = foo[dbase][table]
                 fp.write(create_table(cur_table['tags'], "Tags"))
                 fp.write(create_table(cur_table["fields"], "Field names"))
+            fp.write('</div>')
 
         fp.write("</body></html>")
         return outfile
