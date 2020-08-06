@@ -41,9 +41,12 @@ def get_data(url: str):
 
     dbases = {}
     d = _query(url, {"q": "show databases"})
+    # remove internal database
     foo = [_[0] for _ in d if not _[0].startswith('_')]
-    for _ in foo:
-        dbases.setdefault(_, {})
+
+    # for db in [foo[0]]:  # fill up the database directory
+    for db in foo:  # fill up the database directory
+        dbases.setdefault(db, {})
 
     for db in dbases.keys():
         params = {"q": "show measurements", "db": db}
@@ -53,15 +56,24 @@ def get_data(url: str):
         tables = [_[0] for _ in foo]
 
         for table in tables:
-            dbases[db].setdefault(table, {})
+            # create the two compulsory fields
+            dbases[db].setdefault(table, {"tags": {}, "fields": []})
 
-            foo = _query(url, params={"db": db, "q": f"show field keys from {table}"})
-            dbases[db][table].setdefault("fields", [(_[0], _[1]) for _ in foo])
-            foo = _query(url, params={"db": db, "q": f"show tag keys from {table}"})
-            if foo:
-                dbases[db][table].setdefault("tags", [(_[0]) for _ in foo])
-            else:
-                dbases[db][table].setdefault("tags", [])
+            # fields
+            fields = _query(url, params={"db": db, "q": f"show field keys from {table}"})
+            dbases[db][table]["fields"] = [f"{_[0]} ({_[1][0].upper()})" for _ in fields]
+
+            # tags
+            xd = {}
+            lines = _query(url, params={"q": f"show series on {db} from {table}"})
+            for line in lines:
+                x = line[0].split(',')
+                for y in x[1:]:  # drop the first value (measurement name)
+                    tag, tagvalue = y.split("=")
+                    xd.setdefault(tag, set())
+                    xd[tag].add(tagvalue)
+
+            dbases[db][table]["tags"] = xd
     return dbases
 
 
