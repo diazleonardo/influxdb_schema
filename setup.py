@@ -9,7 +9,7 @@ with open('README.rst') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
-    license = f.read()
+    _license = f.read()
 
 setup(
     name='influxdb',
@@ -19,7 +19,6 @@ setup(
     author='Leonardo Díaz',
     author_email='ldiaz@antakori.com',
     url='https://github.com/',
-    license=license,
+    license=_license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
-

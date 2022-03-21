@@ -7,16 +7,20 @@ div.padleft {margin-left: 4em;}
 
 body {margin-left: 2em;}
 caption {font-variant: small-caps; font-weight: bold; }
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
+
 .tags {table-layout:fixed}
 .field_names {table-layout:fixed; border: 1px}
 
-table {background-color: #F0F8EB}
+table {background-color: #F0F8EB;}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 th, td {padding: 5px;}
+
 tr:nth-child(even) {background-color: #E5F7D2;}
+.v {color:#BBB}
+
 .db {margin-bottom: 3em}
 h1 {border-bottom: 4px dotted green; text-align: center}
 h2 {margin-top:3em}

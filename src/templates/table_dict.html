@@ -9,13 +9,24 @@ tag is a list
 
 {%block content %}
 <h2>{{ table_name }} </h2>
+
 <h3>Fields</h3>
 <div class="padleft">
-    <ul>
-        {% for field in fields %}
-        <li>{{ field }}</li>
-        {%endfor %}
-    </ul>
+<!--    <ul>-->
+<!--        {% for field in fields %}-->
+<!--        <li>{{ field }}</li>-->
+<!--        {%endfor %}-->
+<!--    </ul>-->
+    <table>
+        {% for row in fields %}
+        <tr>
+        {% for col in row %}
+            <td>{{col[0]}} <span class="v"> {{col[1]}}</span></td>
+        {% endfor %}
+        </tr>
+        {% endfor %}
+
+</table>
 </div>
 
 <h3>Tags</h3>
