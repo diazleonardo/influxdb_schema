@@ -9,8 +9,9 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 
 env = Environment(loader=PackageLoader("src"), autoescape=select_autoescape(),
                   trim_blocks=True, lstrip_blocks=True, )
-db_tpl = env.get_template("databases.html")
-tb_tpl = env.get_template("table_dict.html")
+tpl_index = env.get_template("index.html")
+tpl_one_table = env.get_template("one_table.html")
+tpl_per_db = env.get_template("per_db.html")
 
 URL = "http://mqtt.ldiaz.lan:8086"
 
@@ -128,23 +129,19 @@ if __name__ == "__main__":
     dbs = databases()
     rete = [retention(db) for db in dbs]
 
-    print(db_tpl.render(table_name="Databases", databases=dbs, ret=rete),
-                        file=open(f"{base_dir}/databases.html", 'w'))
+    print(tpl_index.render(table_name="Databases", databases=dbs, ret=rete),
+          file=open(f"{base_dir}/index.html", 'w'))
 
     for db in dbs[0:]:
-        tables = measurements(db)
+        with open(f"{base_dir}/{db}.html", "w") as db_file:
+            db_file.write(tpl_per_db.render(table_name=None))
+            tables = measurements(db)
+            for table in tables:
+                fi, fi2 = fields(db, table)
+                tags_in_meas = tag_keys(db, table)
+                tags = []
+                for v in tags_in_meas:
+                    tags.append({v: tag_values(db, table, v)})
 
-        table_dict = {}
-        for table in tables:
-            table_dict[table] = {}
-            fi, fi2 = fields(db, table)
-
-            tags_in_meas = tag_keys(db, table)
-            foo = []
-            for v in tags_in_meas:
-                foo.append({v: tag_values(db, table, v)})
-            table_dict[table]["tags"] = foo
-            # results[db] = table_dict
-            print(tb_tpl.render(table_name=table, fields=fi2, tags=foo),
-                  file=open(f"{base_dir}/{table}.html", 'w'))
+                db_file.write(tpl_one_table.render(table_name=table, fields=fi2, tags=tags))
     print("END")
