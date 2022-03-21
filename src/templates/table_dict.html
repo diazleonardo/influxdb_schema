@@ -1,0 +1,35 @@
+{# called with dict (tables within database of dict(fields and tags)
+fields is also a dict with the name of the field as key and the type as value,
+tag is a list
+#}
+{% extends "base.html" %}
+
+{% block title %}Measurement{% endblock %}
+
+
+{%block content %}
+<h2>{{ table_name }} </h2>
+<h3>Fields</h3>
+<div class="padleft">
+    <ul>
+        {% for field in fields %}
+        <li>{{ field }}</li>
+        {%endfor %}
+    </ul>
+</div>
+
+<h3>Tags</h3>
+<div class="padleft">
+    <dl>
+        {% for tag in tags %}
+        {% for t, values in tag.items() %}
+        <dt>{{ t }}</dt>
+        {% for v in values %}
+        <dd>{{v}}</dd>
+        {% endfor %}
+        {% endfor %}
+        {%endfor %}
+    </dl>
+</div>
+
+{%endblock %}
