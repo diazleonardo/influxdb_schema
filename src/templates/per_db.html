@@ -1,15 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="style.css" />
-    <title>Databases - My Webpage</title>
-</head>
-<body>
-    <% block content %> <% endblock %}
+{% extends "base.html" %}
 
-    <div id="footer">
-        &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
+{% block title %}{{db}}{% endblock %}
+
+{%block content %}
+
+<h1>Database: {{db}}</h1>
+        <h2 id="Retention_policy">Retention policy</h2>
+        <div class="padleft">
+        <table>
+            <tr><th>Name      </th><th>Duration  </th><th>Shard duration</th><th>Replican</th><th>Default</th></tr>
+            <tr><td>{{ret[0]}}</td><td>{{ret[1]|replace("h", "h ")|replace("m", "m ")}}</td>
+                <td>{{ret[2]|replace("h", "h ")|replace("m", "m ")}}</td><td>{{ret[3]}}  </td><td>{{ret[4]}} </td></tr>
+        </table>
+        </div>
+
+  {% for table, values in tables.items() %}
+
+  <h2>Measurement (table): {{ table }} </h2>
+
+    <h3>Fields</h3>
+    <div class="padleft">
+        <table>
+            {% for row in values[0] %}
+            <tr>
+            {% for col in row %}
+                <td>{{col[0]}} <span class="v"> {{col[1]}}</span></td>
+            {% endfor %}
+            </tr>
+            {% endfor %}
+
+    </table>
     </div>
-</body>
-</html>
+
+    <h3>Tags</h3>
+    <div class="padleft">
+        <dl>
+            <!-- {% for tag in values[1] %}
+              {% for t, values in tag.items() %}
+                <dt>{{ t }}</dt>
+                {% for v in values %}
+                  <dd>{{v}}</dd>
+                 {% endfor %}
+              {% endfor %}
+            {%endfor %} -->
+            {% for tag in values[1] %}
+              {% for t, values in tag.items() %}
+                <p><b>{{ t }}:</b>
+                {% for v in values %}
+                  {{v}},
+                 {% endfor %}
+                </p>
+              {% endfor %}
+            {%endfor %}
+        </dl>
+    </div>
+  {% endfor %}
+{%endblock %}

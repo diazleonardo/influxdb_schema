@@ -1,12 +1,9 @@
-dl {color:red}
 
-dt {color: green}
-dd {color: blue}
+dt {font-weight:bolder}
 
 div.padleft {margin-left: 4em;}
 
 body {margin-left: 2em;}
-caption {font-variant: small-caps; font-weight: bold; }
 
 .tags {table-layout:fixed}
 .field_names {table-layout:fixed; border: 1px}
@@ -21,14 +18,5 @@ th, td {padding: 5px;}
 tr:nth-child(even) {background-color: #E5F7D2;}
 .v {color:#BBB}
 
-.db {margin-bottom: 3em}
-h1 {border-bottom: 4px dotted green; text-align: center}
-h2 {margin-top:3em}
-
-.clicker {
-    background-color:silver;
-    outline:none;
-    cursor:row-resize;
-}
-.hiddendiv{ display:none; }
-.clicker:focus + .hiddendiv{ display:block; }
+h1 {text-align: center}
+h2 {margin-bottom:1em; border-top: 2px dotted green}
