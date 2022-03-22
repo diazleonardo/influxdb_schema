@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 # vim: ts=4:sw=4:ai
-import os
-import sys
-import requests
-import requests.status_codes
-import jinja2
+"""Module  doc string
+"""
+
 import argparse
 import logging
 import math  # for ceil
+import os
+import sys
 from datetime import datetime, timezone
+
+import jinja2
+import requests
+import requests.status_codes
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +30,7 @@ def flatten(list_of_lists) -> list:
 
 def req(params: str):
     try:  # this checks for the connection
-        r = requests.get(args.url + "/query", params={"q": params})
+        r = requests.get(args.url + "/query", params={"q": params}, auth=(args.user, args.passwd))
     except requests.exceptions.ConnectionError:
         logger.fatal(f"Connection refused")
         sys.exit(9)
@@ -115,7 +119,7 @@ def main():
         tables = measurements(db)
         ret = retention(db)
         ser = series(db)
-        logger.debug(ser)
+        logger.debug(f"Series for {db} {len(ser)}")
         tab_dict = {}
         for table in tables:
             fi2 = fields(db, table)
@@ -130,7 +134,16 @@ def main():
     logger.info(f"Output written to {args.outdir}")
 
 
+def version():
+    parent_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(parent_folder+'/setup.py', "r") as fp:
+        lines = fp.readlines()
+    foo = [line for line in lines if line.startswith("__version__")][0].split('=')[1].strip()
+    return foo
+
+
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--outdir", help="Name for output directory. Must exists before running.",
                         default="/tmp/influxdb_schema")
@@ -139,7 +152,14 @@ if __name__ == "__main__":
     parser.add_argument("--url",
                         help="Server address and port (http://influx.example.com:8086)",
                         default="http://mqtt.ldiaz.lan:8086")
+    parser.add_argument("--user", "-u", default=None,
+                        help="user name if necessary for authetication.")
+    parser.add_argument("--passwd", "-p", default=None,
+                        help="password if necessary for authetication.")
+    parser.add_argument("--version","-v", action="version",
+                        version="%(prog)s (version {version})".format(version=version()))
     args = parser.parse_args()
+    print(args)
 
     if args.debug:
         level = logging.DEBUG
