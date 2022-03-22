@@ -3,28 +3,20 @@
 <head>
     <meta charset="utf-8"/>
     {% block head %}
-    <!--link rel="stylesheet" href="style.css" / -->
-    <style>dt {font-weight:bolder}
-    div.padleft {margin-left: 4em;}
-    body {margin-left: 2em;}
-    table {background-color: #F0F8EB;}
-    table, th, td {border: 1px solid black; border-collapse: collapse;}
-    th, td {padding: 5px;}
-    tr:nth-child(even) {background-color: #E5F7D2;}
-    .v {color:#BBB}
-    h1 {text-align: center}
-    h2 {margin-bottom:1em; border-top: 2px dotted green}</style>
-
+    <link rel="stylesheet" href="style.css" />
     <title>{% block title %}{{title}}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
     <div id="content">{% block content %}{% endblock %}</div>
-
+    {% if footer %}
     <div id="footer">
         {% block footer %}
-        &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
+        <p class="footer">{{footer}}</p>
         {% endblock %}
     </div>
+    {% else %}
+    <a href="index.html">Back to databases list</a>
+   {% endif %}
 </body>
 </html>

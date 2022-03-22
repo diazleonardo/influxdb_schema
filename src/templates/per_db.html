@@ -3,12 +3,12 @@
 {% block title %}{{db}}{% endblock %}
 
 {%block content %}
-
+<a href="index.html">Back</a>
 <h1>Database: {{db}}</h1>
         <h2 id="Retention_policy">Retention policy</h2>
         <div class="padleft">
         <table>
-            <tr><th>Name      </th><th>Duration  </th><th>Shard duration</th><th>Replican</th><th>Default</th></tr>
+            <tr><th>Name</th><th>Duration  </th><th>Shard duration</th><th>Replican</th><th>Default</th></tr>
             <tr><td>{{ret[0]}}</td><td>{{ret[1]|replace("h", "h ")|replace("m", "m ")}}</td>
                 <td>{{ret[2]|replace("h", "h ")|replace("m", "m ")}}</td><td>{{ret[3]}}  </td><td>{{ret[4]}} </td></tr>
         </table>
@@ -29,30 +29,28 @@
             </tr>
             {% endfor %}
 
-    </table>
+        </table>
     </div>
 
     <h3>Tags</h3>
     <div class="padleft">
-        <dl>
-            <!-- {% for tag in values[1] %}
-              {% for t, values in tag.items() %}
-                <dt>{{ t }}</dt>
-                {% for v in values %}
-                  <dd>{{v}}</dd>
-                 {% endfor %}
-              {% endfor %}
-            {%endfor %} -->
-            {% for tag in values[1] %}
-              {% for t, values in tag.items() %}
-                <p><b>{{ t }}:</b>
-                {% for v in values %}
-                  {{v}},
-                 {% endfor %}
-                </p>
-              {% endfor %}
-            {%endfor %}
-        </dl>
+        <table class="tags">
+        {% for tag in values[1] %}
+           {% for t, values in tag.items() %}
+              <tr>
+                <td><b>{{ t }}:</b></td>
+                <td>{% for v in values|sort %}
+                  {% if loop.first %}
+                     {{v}}
+                  {% else %}
+                     , {{v}}
+                  {% endif %}
+                {% endfor %}
+                </td>
+              </tr>
+           {% endfor %}
+        {%endfor %}
+        </table>
     </div>
   {% endfor %}
 {%endblock %}

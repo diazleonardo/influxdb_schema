@@ -1,12 +1,6 @@
 
-dt {font-weight:bolder}
-
-div.padleft {margin-left: 4em;}
 
 body {margin-left: 2em;}
-
-.tags {table-layout:fixed}
-.field_names {table-layout:fixed; border: 1px}
 
 table {background-color: #F0F8EB;}
 table, th, td {
@@ -16,7 +10,15 @@ table, th, td {
 th, td {padding: 5px;}
 
 tr:nth-child(even) {background-color: #E5F7D2;}
-.v {color:#BBB}
+
+/*dt {font-weight:bolder}*/
+
+div.padleft {margin-left: 4em;}
+
+.v {color:#888}
 
 h1 {text-align: center}
-h2 {margin-bottom:1em; border-top: 2px dotted green}
+h2 {margin-bottom:1em; border-top: 2px dotted green; padding-top:.5em}
+
+p.footer {text-align:center; margin:3em 25% 0 25%; border-top: 2px solid red; padding-top: 1em;}
+p.tags {margin:0; padding:0}
