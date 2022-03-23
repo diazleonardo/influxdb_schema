@@ -10,7 +10,7 @@ import os
 import sys
 from datetime import datetime, timezone
 import zipfile
-import tarfile
+
 
 import jinja2
 import requests
@@ -130,9 +130,7 @@ def main():
     dbs = databases()
     data = open("res/style.css", "r").read()
 
-    cdir = os.getcwd()
-    os.chdir(args.outdir)
-    with zipfile.ZipFile("influxdb_schema.zip", "w", compression=zipfile.ZIP_DEFLATED) as myzip:
+    with zipfile.ZipFile(args.outfile, "w", compression=zipfile.ZIP_DEFLATED) as myzip:
         myzip.writestr("style.css", data=data)
         data = tpl_index.render(table_name="Databases", databases=dbs,
                                 footer="As of " + datetime.now(timezone.utc).isoformat(sep="T", timespec='minutes'))
@@ -142,8 +140,7 @@ def main():
             data = per_database(db, tpl_per_db)
             myzip.writestr(f"{db}.html", data=data)
 
-    os.chdir(cdir)
-    logger.info(f"Output written to {args.outdir}")
+    logger.info(f"Output written to {args.outfile}")
 
 
 def version():
@@ -157,8 +154,8 @@ def version():
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--outdir", help="Name for output directory. Must exists before running.",
-                        default="/tmp/influxdb_schema")
+    parser.add_argument("--outfile", "-o", help="Name for the output (zip) file.",
+                        default="/tmp/influxdb_schema.zip")
     parser.add_argument("--debug",
                         help="Output DEBUG level logs", action="store_true")
     parser.add_argument("--url",
@@ -168,10 +165,10 @@ if __name__ == "__main__":
                         help="user name if necessary for authetication.")
     parser.add_argument("--passwd", "-p", default=None,
                         help="password if necessary for authetication.")
-    parser.add_argument("--version","-v", action="version",
+    parser.add_argument("--version", "-v", action="version",
                         version="%(prog)s (version {version})".format(version=version()))
     args = parser.parse_args()
-    print(args)
+    logger.dedbug(args)
 
     if args.debug:
         level = logging.DEBUG
