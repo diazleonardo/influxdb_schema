@@ -57,7 +57,7 @@ and make the files readable
 # Examples
 **Example of the index.html file**
 <p align="center">
-<img src="/src/res/databases.png" />
+<img src="https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png" style="border: 3px black solid;" />
 </p>
 
 -------
@@ -65,3 +65,9 @@ and make the files readable
 **Example of one database (rpi_monitoring.html) file**
 
 ![rpi](/src/res/rpi.png)
+
+
+![rpi](/blob/master/src/res/rpi.png)
+
+
+![rpi](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/rpi.png)
