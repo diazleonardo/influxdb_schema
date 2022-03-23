@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Learn more: https://github.com/kennethreitz/setup.py
-
 from setuptools import setup, find_packages
 
 __version__ = '1.0.0'
-with open('README.rst') as f:
+with open('README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
@@ -18,7 +16,7 @@ setup(
     long_description=readme,
     author='Leonardo Díaz',
     author_email='ldiaz@antakori.com',
-    url='https://github.com/',
+    url='https://github.com/diazleonardo/influxdb_schema',
     license=_license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs', 'res'))
 )

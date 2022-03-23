@@ -41,11 +41,27 @@ The final product is a zip file containing at least two files.
 
 You can modify the `css` page to your liking, but remember to keep a copy since it will be overwritten next time.
 
-Example of the index.html file
+## Install the files
+If you are on a Linux type environment, copy the zip file to the http server
+
+`scp my.zip user@www.example.com:///home/user`
+
+unpack (**this will overwrite the old definitions!**)
+
+`sudo unzip /home/user/my.zip -d /var/www/html`
+
+and make the files readable
+
+`sudo chown www-data:www-data /var/www/html/*`
+
+# Examples
+**Example of the index.html file**
 <p align="center">
-<img src="https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png" style="border: 1px solid black" />
+<img src="https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png" style="border: 3px black solid;" />
 </p>
 
-Example of one database (rpi_monitoring.html) file
+-------
+
+**Example of one database (rpi_monitoring.html) file**
 
 ![rpi](https://user-images.githubusercontent.com/11944096/159730316-cde3ceab-84d5-4c36-97b4-e5a67cb06972.png)
