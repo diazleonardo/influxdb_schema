@@ -41,6 +41,11 @@ The final product is a zip file containing at least two files.
 
 You can modify the `css` page to your liking, but remember to keep a copy since it will be overwritten next time.
 
+Example of the index.html file
+<p align="center">
 ![Databases](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png)
+</p>
+
+Example of one database (rpi_monitoring.html) file
 
 ![rpi](https://user-images.githubusercontent.com/11944096/159730316-cde3ceab-84d5-4c36-97b4-e5a67cb06972.png)
