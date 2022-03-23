@@ -7,7 +7,8 @@ This program produces a listing of the databases, tables, fields and tags on you
 
 ![Portion of the listing for Raspberry Pi ](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/rpi.png)
 
-![SSS Portion of the listing for Raspberry Pi ](![rpi](https://user-images.githubusercontent.com/11944096/159730316-cde3ceab-84d5-4c36-97b4-e5a67cb06972.png))
+![rpi](https://user-images.githubusercontent.com/11944096/159730316-cde3ceab-84d5-4c36-97b4-e5a67cb06972.png)
+
 
 Use
 ---
