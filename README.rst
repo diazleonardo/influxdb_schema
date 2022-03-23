@@ -5,9 +5,9 @@ Many times I get confused about what is being logged in my home influx databases
 
 This program produces a listing of the databases, tables, fields and tags on your server.
 
-![Portion of the listing for Raspberry Pi ](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/rpi.png "Portion")
+![Portion of the listing for Raspberry Pi ](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/rpi.png)
 
-![SSS Portion of the listing for Raspberry Pi ](/influxdb_schema/blob/master/src/res/rpi.png "Portion")
+![SSS Portion of the listing for Raspberry Pi ](/influxdb_schema/blob/master/src/res/rpi.png)
 
 Use
 ---
