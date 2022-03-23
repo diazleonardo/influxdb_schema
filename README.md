@@ -43,7 +43,7 @@ You can modify the `css` page to your liking, but remember to keep a copy since 
 
 Example of the index.html file
 <p align="center">
-![Databases](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png)
+<img src="https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/databases.png" style="border: 1px solid black" />
 </p>
 
 Example of one database (rpi_monitoring.html) file
