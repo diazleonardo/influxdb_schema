@@ -5,30 +5,25 @@
 {%block content %}
 <a href="index.html">Back</a>
 <h1>Database: {{db}}</h1>
-        <h2 id="Retention_policy">Retention policy</h2>
-        <div class="padleft">
-        <table>
-            <tr><th>Name</th><th>Duration  </th><th>Shard duration</th><th>Replican</th><th>Default</th></tr>
-            <tr><td>{{ret[0]}}</td><td>{{ret[1]|replace("h", "h ")|replace("m", "m ")}}</td>
-                <td>{{ret[2]|replace("h", "h ")|replace("m", "m ")}}</td><td>{{ret[3]}}  </td><td>{{ret[4]}} </td></tr>
-        </table>
-        </div>
-
+    <p>Number of series in database: {{ser|length}}</p>
+    <h2 id="Retention_policy">Retention policy</h2>
+    <div class="padleft">
+    <table>
+        <tr><th>Name</th><th>Duration  </th><th>Shard duration</th><th>Replican</th><th>Default</th></tr>
+        <tr><td>{{ret[0]}}</td><td>{{ret[1]|replace("h", "h ")|replace("m", "m ")}}</td>
+            <td>{{ret[2]|replace("h", "h ")|replace("m", "m ")}}</td><td>{{ret[3]}}  </td><td>{{ret[4]}} </td></tr>
+    </table>
+    </div>
   {% for table, values in tables.items() %}
-
   <h2>Measurement (table): {{ table }} </h2>
-
     <h3>Fields</h3>
     <div class="padleft">
         <table>
             {% for row in values[0] %}
             <tr>
-            {% for col in row %}
-                <td>{{col[0]}} <span class="v"> {{col[1]}}</span></td>
-            {% endfor %}
+            {% for col in row %}<td>{{col[0]}} <span class="v"> {{col[1]}}</span></td>{% endfor %}
             </tr>
             {% endfor %}
-
         </table>
     </div>
 

@@ -76,7 +76,7 @@ def tag_keys(dba: str, from_table: str) -> list:
 
 def tag_values(dba: str, from_table: str, key) -> list:
     k = req(f'SHOW TAG VALUES ON {dba} FROM {from_table} WITH KEY = "{key}"')
-    return list(zip(*k))[1]
+    return list(list(zip(*k))[1])
 
 
 def fields(dba: str, from_table: str, cols=5) -> list:
@@ -117,7 +117,7 @@ def per_database(db: str, renderer) -> str:
             tags.append({v: tag_values(db, table, v)})
         tab_dict[table] = (fi2, tags)  # fi2 is a [list of [list] of tuple (temp0, float)]
 
-    return renderer.render(db=db, ret=ret, tables=tab_dict)
+    return renderer.render(db=db, ser=ser, ret=ret, tables=tab_dict)
 
 
 def main():
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     parser.add_argument("--version", "-v", action="version",
                         version="%(prog)s (version {version})".format(version=version()))
     args = parser.parse_args()
-    logger.dedbug(args)
+    logger.debug(args)
 
     if args.debug:
         level = logging.DEBUG
