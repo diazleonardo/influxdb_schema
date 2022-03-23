@@ -40,10 +40,8 @@
               <tr>
                 <td><b>{{ t }}:</b></td>
                 <td>{% for v in values|sort %}
-                  {% if loop.first %}
-                     {{v}}
-                  {% else %}
-                     , {{v}}
+                  {% if loop.first %}{{v}}
+                  {% else %}, {{v}}
                   {% endif %}
                 {% endfor %}
                 </td>

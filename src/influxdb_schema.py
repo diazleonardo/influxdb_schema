@@ -9,6 +9,8 @@ import math  # for ceil
 import os
 import sys
 from datetime import datetime, timezone
+import zipfile
+import tarfile
 
 import jinja2
 import requests
@@ -101,6 +103,23 @@ def fields(dba: str, from_table: str, cols=5) -> list:
     return sec_list
 
 
+def per_database(db: str, renderer) -> str:
+    tables = measurements(db)
+    ret = retention(db)
+    ser = series(db)
+    #  logger.debug(f"Series for {db} {len(ser)}")
+    tab_dict = {}
+    for table in tables:
+        fi2 = fields(db, table)
+        tags_in_meas = tag_keys(db, table)
+        tags = []
+        for v in tags_in_meas:
+            tags.append({v: tag_values(db, table, v)})
+        tab_dict[table] = (fi2, tags)  # fi2 is a [list of [list] of tuple (temp0, float)]
+
+    return renderer.render(db=db, ret=ret, tables=tab_dict)
+
+
 def main():
     env = jinja2.Environment(loader=jinja2.PackageLoader("src"),
                              autoescape=jinja2.select_autoescape(),
@@ -109,28 +128,21 @@ def main():
     tpl_per_db = env.get_template("per_db.html")
 
     dbs = databases()
-    rete = [retention(db) for db in dbs]
+    data = open("res/style.css", "r").read()
 
-    print(tpl_index.render(table_name="Databases", databases=dbs, ret=rete,
-                           footer="As of " + datetime.now(timezone.utc).isoformat(sep="T", timespec='minutes')),
-          file=open(f"{args.outdir}/index.html", 'w'))
+    cdir = os.getcwd()
+    os.chdir(args.outdir)
+    with zipfile.ZipFile("influxdb_schema.zip", "w", compression=zipfile.ZIP_DEFLATED) as myzip:
+        myzip.writestr("style.css", data=data)
+        data = tpl_index.render(table_name="Databases", databases=dbs,
+                                footer="As of " + datetime.now(timezone.utc).isoformat(sep="T", timespec='minutes'))
+        myzip.writestr("index.html", data=data)
 
-    for db in dbs[0:]:
-        tables = measurements(db)
-        ret = retention(db)
-        ser = series(db)
-        logger.debug(f"Series for {db} {len(ser)}")
-        tab_dict = {}
-        for table in tables:
-            fi2 = fields(db, table)
-            tags_in_meas = tag_keys(db, table)
-            tags = []
-            for v in tags_in_meas:
-                tags.append({v: tag_values(db, table, v)})
-            tab_dict[table] = (fi2, tags)  # fi2 is a [list of [list] of tuple (temp0, float)]
+        for db in dbs[0:]:
+            data = per_database(db, tpl_per_db)
+            myzip.writestr(f"{db}.html", data=data)
 
-        print(tpl_per_db.render(db=db, ret=ret, tables=tab_dict),
-              file=open(f"{args.outdir}/{db}.html", 'w'))
+    os.chdir(cdir)
     logger.info(f"Output written to {args.outdir}")
 
 
