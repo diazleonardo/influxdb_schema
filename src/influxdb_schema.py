@@ -163,7 +163,7 @@ if __name__ == "__main__":
                         help="Output DEBUG level logs", action="store_true")
     parser.add_argument("--url",
                         help="Server address and port (http://influx.example.com:8086)",
-                        default="http://mqtt.ldiaz.lan:8086")
+                        default="http://localhost:8086")
     parser.add_argument("--user", "-u", default=None,
                         help="user name if necessary for authetication.")
     parser.add_argument("--passwd", "-p", default=None,

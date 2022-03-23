@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-__version__ = '0.9.1'
+__version__ = '1.0.0'
 with open('README.rst') as f:
     readme = f.read()
 
@@ -14,7 +14,7 @@ with open('LICENSE') as f:
 setup(
     name='influxdb',
     version='1.0.0',
-    description='Produce an HTML listing of thhe influxdb',
+    description='Produce an HTML listing of the influxdb schema',
     long_description=readme,
     author='Leonardo Díaz',
     author_email='ldiaz@antakori.com',
