@@ -64,4 +64,10 @@ and make the files readable
 
 **Example of one database (rpi_monitoring.html) file**
 
-![rpi](https://user-images.githubusercontent.com/11944096/159730316-cde3ceab-84d5-4c36-97b4-e5a67cb06972.png)
+![rpi](/src/res/rpi.png)
+
+
+![rpi](/blob/master/src/res/rpi.png)
+
+
+![rpi](https://github.com/diazleonardo/influxdb_schema/blob/master/src/res/rpi.png)
