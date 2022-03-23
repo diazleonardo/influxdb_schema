@@ -173,7 +173,7 @@ if __name__ == "__main__":
     if args.debug:
         level = logging.DEBUG
     else:
-        level = logging.FATAL
+        level = logging.WARNING
 
     logging.basicConfig(format='%(levelname)-4.4s %(module)-9.9s %(lineno)4d - %(message)s', level=level)
     logger = logging.getLogger(__file__)
