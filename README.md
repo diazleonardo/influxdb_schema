@@ -65,3 +65,5 @@ and make the files readable
 **Example of one database (rpi_monitoring.html) file**
 
 ![rpi](/src/res/rpi.png)
+
+*As you may notice, i need ~~some~~ a lot of help in the design and color schema stuff!*
